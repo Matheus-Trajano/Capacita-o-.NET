@@ -1,0 +1,370 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace ConsoleApp3
+{
+    class Program
+    {
+        // cadastro // falta tipo
+        // pesquisa por primeiro // feito
+        // pesquisa por nome completo a fazer // feito
+        // pesquisa por cidade a fazer // feito
+        // menu enum para tipo de contato // quase
+        // datetime // quase
+        // impressão da lista // feito
+        // organizar formatação // feito 
+        // remover contato // feito
+        enum menu
+        {
+            cadastro = 1,
+            imprimirlista,
+            pesquisacontatoprimeironome,
+            pesquisacontatonomecompleto,
+            pesquisacidade,
+            removercontato
+
+
+        }
+
+        enum tipocontato
+        {
+            celular = 1,
+            trabalho,
+            casa,
+            principal,
+            pager,
+            faxtrabalho,
+            faxCasa,
+            outro
+        }
+        struct Contato
+        {
+            public Nome nome;
+            public string telefone;
+            public string email;
+            public Endereço endereço;
+            public int nascimento;
+            public string observacao;
+            public string tipocontato;
+        }
+        struct Endereço
+        {
+            public string rua;
+            public string numero;
+            public string bairro;
+            public string cidade;
+
+        }
+        struct Nome
+        {
+            public string primeironome;
+            public string sobrenome;
+        }
+        static void Main(string[] args)
+
+        {
+
+            string nomecompleto = "";
+
+
+            string[,] lista = new string[100, 10];
+            string[] cidade = new string[100];
+            string[] nome_completo = new string[100];
+            string[] primeironome = new string[100];
+            string[] sobrenome = new string[100];
+            Contato list = new Contato();
+
+
+
+
+            int indexToRemove = 3;
+
+
+
+            int x = 100;
+            while (true)
+            {
+
+                Console.WriteLine("Menu da agenda: \n 1.Cadastre um novo contato \n 2.Imprima a lista completa \n 3.Pesquise o contato pelo primeiro nome" +
+                    "\n 4.Pesquise o contato pelo nome completo \n 5.Pesquise o contato pela cidade \n 6.Remova um contato");
+                Console.WriteLine("Digite a opção que deseja:");
+                int opcao = Convert.ToInt32(Console.ReadLine());
+                menu menu = new menu();
+                menu = (menu)opcao;
+
+                #region cadastro
+
+                switch (opcao)
+                {
+                    case 1:
+                        x--;
+
+                        list.nome.primeironome = Console.ReadLine();
+
+                        list.nome.sobrenome = Console.ReadLine();
+                        primeironome[x] = list.nome.primeironome;
+                        sobrenome[x] = list.nome.sobrenome;
+                        nomecompleto = list.nome.primeironome + " " + list.nome.sobrenome;
+                        nome_completo[x] = list.nome.primeironome + "" + list.nome.sobrenome;
+                        Console.WriteLine(nomecompleto);
+                        lista[x, 0] = nomecompleto;
+                        nome_completo[x] = nomecompleto;
+
+                        #region verificacao numero
+                        while (true) // verificação se o número contém 9 na frente
+                        {
+                            Console.WriteLine("digite o telefone do contato"); // coleta do telefone
+                            string tel = Console.ReadLine();
+
+
+
+                            char num9 = tel[2];
+
+                            if (num9 != '9')
+                            {
+                                Console.WriteLine("O número é igual a nove, está correto");
+                            }
+                            else
+                            {
+                                Console.WriteLine("o número está correto, pode continuar");
+                                list.telefone = tel;
+                                lista[x, 1] = list.telefone;
+                                break;
+                            }
+                        }
+                        #endregion
+
+                        #region tipo de contato
+                        Console.WriteLine("Digite o tipo de contato que está cadastrando: \n1.Celular\n2.Trabalho\n3.Casa\n4.Principal\n5.Pager\n6.Fax Trabalho\n7.Fax Casa\n8.Outro");
+                        int op = Convert.ToInt32(Console.ReadLine());
+                        tipocontato menutipo = new tipocontato();
+                        menutipo = (tipocontato)op;
+
+                        switch (op)
+                        {
+                            
+                            case 1:
+                                {
+                                    lista[x, 2] = "Celular";
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    lista[x, 2] = "trabalho";
+                                    break;
+                                }
+                         
+                                
+
+                        }
+                        #endregion
+
+                        #region verificacao email
+
+                        Console.WriteLine("Digite o Email do contato: "); // coleta do email
+                        while (true)
+                        {
+                            list.email = Console.ReadLine();
+                            int verif = 2;
+                            string subs = list.email;
+                            foreach (char sub in subs)
+                            {
+
+                                if (sub == '@')
+                                {
+                                    Console.WriteLine("O email está correto, continue");
+                                    lista[x, 4] = list.email;
+                                    verif = 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    verif = 0;
+                                }
+                            }
+                            if (verif == 1)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("o email está incorreto, tente novamente");
+                            }
+                        }
+
+                        #endregion
+
+                        Console.WriteLine("Digite a rua do contato: "); // coleta rua
+                        list.endereço.rua = Console.ReadLine();
+                        lista[x, 5] = list.endereço.rua;
+
+                        Console.WriteLine("Digite o número da casa"); // coleta número
+                        list.endereço.numero = Console.ReadLine();
+                        lista[x, 6] = list.endereço.numero;
+
+                        Console.WriteLine("Digite o bairro"); // coleta bairro 
+                        list.endereço.bairro = Console.ReadLine();
+                        lista[x, 7] = list.endereço.bairro;
+
+                        Console.WriteLine("Digite a cidade: "); // coleta cidade
+                        list.endereço.cidade = Console.ReadLine();
+                        lista[x, 8] = list.endereço.cidade;
+                        cidade[x] = list.endereço.cidade;
+
+                        Console.WriteLine("Digite a observação: "); // coleta obervacao
+                        list.observacao = Console.ReadLine();
+                        lista[x, 9] = list.observacao;
+                        break;
+
+
+
+                    #endregion cadastro 
+
+                    #region impressão de lista
+                    case 2:
+                        {
+                            int c = 0;
+                            for (int i = lista.GetLowerBound(0); i <= lista.GetUpperBound(0); i++)
+                            {
+                                Console.WriteLine("   [{0,2}]: {1}", i, lista[i, 0]);
+                            }
+                            break;
+                        }
+                    #endregion impressão de lista
+
+                    #region pesquisa primeiro nome
+                    case 3:
+                        {
+                            Console.WriteLine("Infome o primeiro nome do contato que deseja pesquisar: ");
+                            string pesquisanome = Console.ReadLine();
+
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == primeironome[i])
+                                {
+                                    string retorno = lista[i, 0] + "  " + lista[i, 1] + "  " + lista[i, 2] + "  " + lista[i, 3] + "  " + lista[i, 4] + "  " + lista[i, 5] + "  " + lista[i, 6] + "  " + lista[i, 7] + "  " + lista[i, 8] + "  " + lista[i, 9];
+                                    Console.WriteLine(retorno);
+                                    if (i == 99)
+                                    {
+                                        break;
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        }
+                    #endregion
+
+                    #region pesquisa nome completo
+                    case 4:
+
+                        {
+                            Console.WriteLine("Infome o nome completo do contato que deseja pesquisar: ");
+                            string pesquisanome = Console.ReadLine();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == nome_completo[i])
+                                {
+                                    string retorno = lista[i, 0] + "  " + lista[i, 1] + "  " + lista[i, 2] + "  " + lista[i, 3] + "  " + lista[i, 4] + "  " + lista[i, 5] + "  " + lista[i, 6] + "  " + lista[i, 7] + "  " + lista[i, 8] + "  " + lista[i, 9];
+                                    Console.WriteLine(retorno);
+                                    if (i == 99)
+                                    {
+                                        break;
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        }
+                    #endregion
+
+
+                    #region pesquisa cidade
+                    case 5:
+
+                        {
+                            Console.WriteLine("Infome a cidade do contato que deseja pesquisar: ");
+                            string pesquisanome = Console.ReadLine();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == cidade[i])
+                                {
+                                    string retorno = lista[i, 0] + "  " + lista[i, 1] + "  " + lista[i, 2] + "  " + lista[i, 3] + "  " + lista[i, 4] + "  " + lista[i, 5] + "  " + lista[i, 6] + "  " + lista[i, 7] + "  " + lista[i, 8] + "  " + lista[i, 9];
+                                    Console.WriteLine(retorno);
+                                    if (i == 99)
+                                    {
+                                        break;
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        }
+                    #endregion
+
+                    #region remover contato
+                    case 6:
+                        {
+                            Console.WriteLine("Infome o nome completo do contato que deseja remover: ");
+                            string pesquisanome = Console.ReadLine();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == nome_completo[i])
+                                {
+                                    Console.WriteLine("Você confirma que o nome do contato que deve ser removido é:" + lista[i, 0] + lista[i, 1] + lista[i, 2] + lista[i, 3] + lista[i, 4] + lista[i, 5] + lista[i, 6] + lista[i, 7] + lista[i, 8] + lista[i, 9]);
+                                    Console.WriteLine("1 para sim e 2 para não");
+                                    string opx= Console.ReadLine();
+                                    if (opx == "1")
+                                    {
+                                        lista[i, 0] = "";
+                                        lista[i, 1] = "";
+                                        lista[i, 2] = "";
+                                        lista[i, 3] = "";
+                                        lista[i, 4] = "";
+                                        lista[i, 5] = "";
+                                        lista[i, 6] = "";
+                                        lista[i, 7] = "";
+                                        lista[i, 8] = "";
+                                        lista[i, 9] = "";
+                                    }
+                                    if (opx == "2")
+                                    {
+                                        Console.WriteLine("Operação cancelada");
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+
+
+                        #endregion
+
+
+
+
+                }
+            }
+        }
+    }
+}
+
+    
+    
+
+
+
+
+
+
+                
+            
+        
+    
+
