@@ -1,0 +1,512 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace ConsoleApp3
+{
+    class Program
+    {
+        enum menu
+        {
+            cadastro = 1,
+            imprimirlista,
+            pesquisacontatoprimeironome,
+            pesquisacontatonomecompleto,
+            pesquisacidade,
+            removercontato
+        }
+        
+        struct nascimento
+        {
+            public int dia;
+            public int mes;
+            public int ano;
+            public DateTime datanascimento;
+            public DateTime diaatual;
+            public DateTime nascimentoanoatual;
+        }
+
+        enum tipocontato
+        {
+            celular = 1,
+            trabalho,
+            casa,
+            principal,
+            pager,
+            faxtrabalho,
+            faxCasa,
+            outro
+        }
+        struct Contato
+        {
+            public nome nome;
+            public string telefone;
+            public string email;
+            public endereço endereço;            
+            public string observacao;
+            public tipocontato tipo;
+            public nascimento datnascimento;
+            public string nascimento;            
+        }
+        struct endereço
+        {
+            public string rua;
+            public string numero;
+            public string bairro;
+            public string cidade;
+
+        }
+        struct nome
+        {
+            public string primeironome;
+            public string sobrenome;
+        }
+        static void Main(string[] args)
+        {
+            string nomecompleto = "";
+           // Contato[] agenda = new Contato[100]; // como deveria ser
+            string[,] lista = new string[100, 10];
+            string[] cidade = new string[100];
+            string[] nome_completo = new string[100];
+            string[] primeironome = new string[100];
+            string[] sobrenome = new string[100];
+            Contato list = new Contato();
+            // tipo de contato será sempre [x,2]
+            int x = -1;
+            while (true)
+            {
+                Console.WriteLine("Menu da agenda: \n 1.Cadastre um novo contato \n 2.Imprima a lista completa \n 3.Pesquise o contato pelo primeiro nome" +
+                    "\n 4.Pesquise o contato pelo nome completo \n 5.Pesquise o contato pela cidade \n 6.Remova um contato \n 7.Pesquisa por tipo de contato");
+                Console.WriteLine("Digite a opção que deseja:");
+                int opcao = Convert.ToInt32(Console.ReadLine());
+                menu menu = new menu();
+                menu = (menu)opcao;
+
+                    #region cadastro
+
+                switch (opcao)
+                {
+                    case 1:
+                        x++;
+                        Console.Write("Digite apenas o primeiro nome do contato que deseja cadastrar: ");
+                        list.nome.primeironome = Console.ReadLine();
+                        Console.Write("Digite apenas o sobrenome do contato que deseja cadastrar: ");
+                        list.nome.sobrenome = Console.ReadLine();
+                        primeironome[x] = list.nome.primeironome; // adiciona o nome ao array de primeiro nome
+                        sobrenome[x] = list.nome.sobrenome; // adiciona o segundo nome ao array de segundo nome
+                        nomecompleto = list.nome.primeironome + " " + list.nome.sobrenome; 
+                        nome_completo[x] = list.nome.primeironome + "" + list.nome.sobrenome;
+                        Console.WriteLine(nomecompleto);
+                        lista[x, 0] = nomecompleto; // adiciona ao array principal lista o nome completo do usuário
+                        nome_completo[x] = nomecompleto;
+
+                        #region verificacao numero
+                        while (true) // verificação se o número contém 9 na frente
+                        {
+                            Console.WriteLine("digite o telefone do contato"); // coleta do telefone
+                            string tel = Console.ReadLine();
+
+
+
+                            char num9 = tel[2];
+
+                            if (num9 != '9') // verifica se o terceiro digito é igual a 9
+                            {
+                                Console.WriteLine("O número está incorreto, digite novamente");
+                            }
+                            else
+                            {
+                                Console.WriteLine("o número está correto, pode continuar");
+                                list.telefone = tel;
+                                lista[x, 1] = list.telefone;
+                                break;
+                            }
+                        }
+
+                        #endregion
+
+                        #region tipo de contato
+                        Console.WriteLine("Digite o tipo de contato que está cadastrando: \n1.Celular\n2.Trabalho\n3.Casa\n4.Principal\n5.Pager\n6.Fax Trabalho\n7.Fax Casa\n8.Outro");
+                        int op = Convert.ToInt32(Console.ReadLine());
+                        tipocontato menutipo = new tipocontato();
+                        menutipo = (tipocontato)op;
+
+                        switch (op)
+                        {
+
+                            case 1:
+                                {
+                                    lista[x, 2] = "Celular";
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    lista[x, 2] = "Trabalho";
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    lista[x, 2] = "Casa";
+                                    break;
+                                }
+                            case 4:
+                                {
+                                    lista[x, 2] = "Principal";
+                                    break;
+                                }
+                            case 5:
+                                {
+                                    lista[x, 2] = "Pager";
+                                    break;
+                                }
+                            case 6:
+                                {
+                                    lista[x, 2] = "Fax Trabalho";
+                                    break;
+                                }
+                            case 7:
+                                {
+                                    lista[x, 2] = "Fax Casa";
+                                    break;
+                                }
+                            case 8:
+                                {
+                                    lista[x, 2] = "Outro";
+                                    break;
+                                }
+
+                        }
+                        #endregion
+
+                        #region verificacao email
+
+                        Console.WriteLine("Digite o Email do contato: "); // coleta do email
+                        while (true)
+                        {
+                            list.email = Console.ReadLine();
+                            int verif = 2;
+                            string subs = list.email;
+                            foreach (char sub in subs)
+                            {
+                                
+                                if (sub == '@') // verifica se o caracter @ está no email
+                                {
+                                    Console.WriteLine("O email está correto, continue");
+                                    lista[x, 3] = list.email;
+                                    verif = 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    verif = 0;
+                                }
+                            }
+                            if (verif == 1)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("o email está incorreto, tente novamente");
+                            }
+                        }
+
+                        #endregion
+
+                        Console.WriteLine("Digite a rua do contato: "); // coleta rua
+                        list.endereço.rua = Console.ReadLine();
+                        lista[x, 4] = list.endereço.rua;
+
+                        Console.WriteLine("Digite o número da casa"); // coleta número
+                        list.endereço.numero = Console.ReadLine();
+                        lista[x, 5] = list.endereço.numero;
+
+                        Console.WriteLine("Digite o bairro"); // coleta bairro 
+                        list.endereço.bairro = Console.ReadLine();
+                        lista[x, 6] = list.endereço.bairro;
+
+                        Console.WriteLine("Digite a cidade: "); // coleta cidade
+                        list.endereço.cidade = Console.ReadLine();
+                        lista[x, 7] = list.endereço.cidade;
+                        cidade[x] = list.endereço.cidade;
+
+                        #region nascimento                       
+                        Console.WriteLine("Digite sua data de nascimento seguindo as instruções abaixo, o formato final deve ser 00/00/0000: ");
+                        Console.WriteLine("Digite seu dia de nascimento no formado DD e sem barras: ");
+                        list.datnascimento.dia = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Digite seu mês de nascimento no formato MM e sem barras: ");
+                        list.datnascimento.mes = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Digite seu ano de nascimento no formato YYYY e sem barras: ");
+                        list.datnascimento.ano = int.Parse(Console.ReadLine());                        
+
+                        list.datnascimento.diaatual = DateTime.Now;
+                        list.datnascimento.nascimentoanoatual = new DateTime(list.datnascimento.diaatual.Year, list.datnascimento.mes, list.datnascimento.dia);
+                        list.datnascimento.datanascimento = new DateTime(list.datnascimento.ano, list.datnascimento.mes, list.datnascimento.dia);
+                        Console.WriteLine($"Sua data de nascimento é: {list.datnascimento.datanascimento}");
+
+                        int compdat = list.datnascimento.diaatual.Month;
+                        int compdat2 = list.datnascimento.datanascimento.Month;
+                        int compday = list.datnascimento.diaatual.Day;
+                        int compday2 = list.datnascimento.datanascimento.Day;
+                        
+                        if (list.datnascimento.diaatual > list.datnascimento.nascimentoanoatual)
+                        {
+
+                            int increment = list.datnascimento.diaatual.Year + 1;
+                            DateTime incremented = new DateTime(increment, list.datnascimento.mes, list.datnascimento.dia);
+                            list.datnascimento.nascimentoanoatual = incremented;
+                        }
+                       
+                        TimeSpan datafina = list.datnascimento.nascimentoanoatual - list.datnascimento.diaatual;
+                        Console.WriteLine($"Restam{datafina.Days} dias para seu aniversário");
+                        string datanasci = list.datnascimento.datanascimento.ToString("dd/MM/yyyy");
+                        lista[x, 8] = datanasci;
+                        #endregion
+
+                        Console.WriteLine("Digite a observação: "); // coleta obervacao
+                        list.observacao = Console.ReadLine();
+                        lista[x, 9] = list.observacao;
+                        break;
+
+
+                
+
+                    #endregion cadastro 
+
+                    #region impressão de lista
+                    case 2:
+                        {
+                            for (int i = lista.GetLowerBound(0)/*+1 começar do indice 1*/; i <= lista.GetUpperBound(0); i++)
+                            {
+                                if (lista[i,8] == null) // verifica se a posição de nascimento está vazia
+                                {
+                                    Console.WriteLine($"posição {i} está vazia");
+                                }
+                                else if (lista[i,8] != null) 
+                                {
+                                    var nascimento = DateTime.Parse(lista[i, 8]); // converte a posição de nascimento em um datetime
+                                    int incremento = list.datnascimento.diaatual.Year; // pega o nascimento da posição em questão e coloca para o ano atual de quem executou o programa
+                                    DateTime incrementado = new DateTime(incremento, nascimento.Month, nascimento.Day); // cria um novo datetime com o ano atual
+                                    nascimento = incrementado; // iguala o nascimento ao datetime incrementado.
+                                    if (list.datnascimento.diaatual > nascimento) // verifica se o ano de nascimento é menor que a data atual
+                                    {
+                                        int increment = list.datnascimento.diaatual.Year + 1; // caso a data atual seja maior que a data de nascimento ( com o ano atual ) é somado mais um ano.
+                                        DateTime incremented = new DateTime(increment, nascimento.Month, nascimento.Day); // cria um novo datetime para a data de nascimento com o ano a mais.
+                                        nascimento =  incremented; // iguala as duas datas
+                                    }
+
+                                    TimeSpan datafinal =  nascimento - list.datnascimento.diaatual;   // subtrai as datas para obter os dias                                 
+                                    Console.WriteLine($"{lista[i, 0]} {lista[i, 1]} {lista[i,2]}" +" " + $"Restam {datafinal.Days} dias para seu aniversário", lista[i,0], lista[i,1]);
+                                } // o mesmo processo se repete em todas as outras impressões de data de aniversário
+                            }
+                    break;
+                }
+                        
+                    #endregion impressão de lista
+
+                    #region pesquisa primeiro nome
+                    case 3:
+                        {
+                            Console.WriteLine("Infome o primeiro nome do contato que deseja pesquisar: ");
+                            string pesquisanome = Console.ReadLine();                            
+                            for (int i = 0; i <= 99; i++)
+                            {                                
+                                if (pesquisanome == primeironome[i])
+                                {
+                                    if (lista[i, 8] == null)
+                                    {
+                                        Console.WriteLine($"posição {i} está vazia");
+                                    }
+                                    else if (lista[i, 8] != null)
+                                    {
+                                        var nascimento = DateTime.Parse(lista[i, 8]);
+                                        int incremento = list.datnascimento.diaatual.Year;
+                                        DateTime incrementado = new DateTime(incremento, nascimento.Month, nascimento.Day);
+                                        nascimento = incrementado;
+                                        if (list.datnascimento.diaatual > nascimento)
+                                        {
+                                            int increment = list.datnascimento.diaatual.Year + 1;
+                                            DateTime incremented = new DateTime(increment, nascimento.Month, nascimento.Day);
+                                            nascimento = incremented;
+                                        }
+
+                                        TimeSpan datafinal = nascimento - list.datnascimento.diaatual;
+                                        Console.WriteLine($"{lista[i, 0]} {lista[i, 1]} {lista[i, 2]}" + " " + $"Restam {datafinal.Days} dias para seu aniversário", lista[i, 0], lista[i, 1]);
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        }
+                    #endregion
+
+                    #region pesquisa nome completo
+                    case 4:
+                        {
+                            Console.WriteLine("Infome o nome completo do contato que deseja pesquisar: ");
+                            string pesquisanome = Console.ReadLine();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == nome_completo[i])
+                                {
+                                    if (lista[i, 8] == null)
+                                    {
+                                        Console.WriteLine($"posição {i} está vazia");
+                                    }
+                                    else if (lista[i, 8] != null)
+                                    {
+                                        var nascimento = DateTime.Parse(lista[i, 8]);
+                                        int incremento = list.datnascimento.diaatual.Year;
+                                        DateTime incrementado = new DateTime(incremento, nascimento.Month, nascimento.Day);
+                                        nascimento = incrementado;
+                                        if (list.datnascimento.diaatual > nascimento)
+                                        {
+                                            int increment = list.datnascimento.diaatual.Year + 1;
+                                            DateTime incremented = new DateTime(increment, nascimento.Month, nascimento.Day);
+                                            nascimento = incremented;
+                                        }
+
+                                        TimeSpan datafinal = nascimento - list.datnascimento.diaatual;
+                                        Console.WriteLine($"{lista[i, 0]} {lista[i, 1]} {lista[i, 2]}" + " " + $"Restam {datafinal.Days} dias para seu aniversário", lista[i, 0], lista[i, 1]);
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        }
+                    #endregion
+
+                    #region pesquisa cidade
+                    case 5:
+                        {
+                            Console.WriteLine("Infome a cidade do contato que deseja pesquisar: ");
+                            string pesquisanome = Console.ReadLine();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == cidade[i])
+                                {
+                                    if (lista[i, 8] == null)
+                                    {
+                                        Console.WriteLine($"posição {i} está vazia");
+                                    }
+                                    else if (lista[i, 8] != null)
+                                    {
+                                        var nascimento = DateTime.Parse(lista[i, 8]);
+                                        int incremento = list.datnascimento.diaatual.Year;
+                                        DateTime incrementado = new DateTime(incremento, nascimento.Month, nascimento.Day);
+                                        nascimento = incrementado;
+                                        if (list.datnascimento.diaatual > nascimento)
+                                        {
+                                            int increment = list.datnascimento.diaatual.Year + 1;
+                                            DateTime incremented = new DateTime(increment, nascimento.Month, nascimento.Day);
+                                            nascimento = incremented;
+                                        }
+                                        TimeSpan datafinal = nascimento - list.datnascimento.diaatual;
+                                        Console.WriteLine($"{lista[i, 0]} {lista[i, 1]} {lista[i, 2]}" + " " + $"Restam {datafinal.Days} dias para seu aniversário", lista[i, 0], lista[i, 1]);
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        }
+                    #endregion
+
+                    #region remover contato
+                    case 6:
+                        {
+                            Console.WriteLine("Infome o nome completo do contato que deseja remover: ");
+                            string pesquisanome = Console.ReadLine();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == nome_completo[i])
+                                {
+                                    Console.WriteLine("Você confirma que o nome do contato que deve ser removido é:" + lista[i, 0] + lista[i, 1] + lista[i, 2] + lista[i, 3] + lista[i, 4] + lista[i, 5] + lista[i, 6] + lista[i, 7] + lista[i, 8] + lista[i, 9]);
+                                    Console.WriteLine("1 para sim e 2 para não");
+                                    string opx= Console.ReadLine();
+                                    if (opx == "1")
+                                    {
+                                        lista[i, 0] = null;
+                                        lista[i, 1] = null;
+                                        lista[i, 2] = null;
+                                        lista[i, 3] = null;
+                                        lista[i, 4] = null;
+                                        lista[i, 5] = null;
+                                        lista[i, 6] = null;
+                                        lista[i, 7] = null;
+                                        lista[i, 8] = null;
+                                        lista[i, 9] = null;
+                                        primeironome[i] = null;
+                                        sobrenome[i] = null;
+                                    }
+                                    if (opx == "2")
+                                    {
+                                        Console.WriteLine("Operação cancelada");
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+
+                    #endregion
+
+                    #region pesaquisa tipo contato
+                    case 7:
+                        {
+                            Console.WriteLine("informe o tipo do contato que deseja pesquisar: ");
+                            string pesquisanome = Console.ReadLine();
+                            for (int i = 0; i <= 99; i++)
+                            {
+                                if (pesquisanome == lista[i,2])
+                                {
+                                    if (lista[i, 8] == null)
+                                    {
+                                        Console.WriteLine($"posição {i} está vazia");
+                                    }
+                                    else if (lista[i, 8] != null)
+                                    {
+                                        var nascimento = DateTime.Parse(lista[i, 8]);
+                                        int incremento = list.datnascimento.diaatual.Year;
+                                        DateTime incrementado = new DateTime(incremento, nascimento.Month, nascimento.Day);
+                                        nascimento = incrementado;
+                                        if (list.datnascimento.diaatual > nascimento)
+                                        {
+                                            int increment = list.datnascimento.diaatual.Year + 1;
+                                            DateTime incremented = new DateTime(increment, nascimento.Month, nascimento.Day);
+                                            nascimento = incremented;
+                                        }
+
+                                        TimeSpan datafinal = nascimento - list.datnascimento.diaatual;
+                                        Console.WriteLine($"{lista[i, 0]} {lista[i, 1]} {lista[i, 2]}" + " " + $"Restam {datafinal.Days} dias para seu aniversário", lista[i, 0], lista[i, 1]);
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        }
+
+                        #endregion
+                }
+            }
+        }
+    }
+}
+
+    
+    
+
+
+
+
+
+
+                
+            
+        
+    
+
